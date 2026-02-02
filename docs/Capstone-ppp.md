@@ -43,9 +43,13 @@ marp: true
 
 ---
 
-## Sprints Timeline
+## Timeline
 
-1. Start on character and inventory system
-2. Begin terminal system
-3. Work on enemies and combat system
-4. ensure terminal system is done and put together the features into a main level
+### Sprint 1: 
+- Create a player character
+- Start on Inventory system
+- Begin terminal system
+### Sprint 2: 
+- Work on enemies and combat system
+- Ensure terminal system is done
+- Put together the features into a main level
