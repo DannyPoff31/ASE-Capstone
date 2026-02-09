@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwa8eclgjjttv"]
+
+[ext_resource type="Script" uid="uid://ccjsn33hwny2" path="res://scripts/ui.gd" id="1_nt7q6"]
+[ext_resource type="Script" uid="uid://d0kd2cy6o7v2r" path="res://scenes/line_edit.gd" id="2_x4jx1"]
+
+[node name="ui" type="Control" node_paths=PackedStringArray("menu", "text")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nt7q6")
+menu = NodePath("FullScreen")
+text = NodePath("LineEdit")
+
+[node name="FullScreen" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 0
+offset_top = 608.0
+offset_right = 68.5625
+offset_bottom = 639.0
+keep_editing_on_text_submit = true
+caret_blink = true
+script = ExtResource("2_x4jx1")
+
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="LineEdit" to="LineEdit" method="_on_text_submitted"]
