@@ -62,7 +62,8 @@ func turnDir(dir) -> void:
 		print("Invalid modifier to turn command")
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	var text = new_text.split(" ")
+	var text = new_text.replace(" ", "")
+	text = text.split("-")
 
 	match text[0]:
 		# Menu
@@ -78,20 +79,20 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 		# Movement
 		"move":
 			if(len(text) == 1):
-				player.move_state = player.MOVE
-			elif(len(text) > 1 && len(text) < 4):
-				player.move(text)
+				var move = player.pos + player.dir
+				player.setPos(move)
+			elif(len(text) == 2):
+				moveDir(text[1])
 			else:
 				print("Incorrect format for command")
 		"turn":
-			if(len(text) > 1 && len(text) < 5):
-				player.turn(text)
-				#turnDir(text[1])
+			if(len(text) == 2):
+				turnDir(text[1])
 			else:
 				print("Incorrect format for command")
 
 		"attack":
-			player.weapon.attack(text)
+			player.entAttk(text[0])
 
 
 		# END

@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://col3grldrcfy4"]
+[gd_scene load_steps=6 format=3 uid="uid://col3grldrcfy4"]
 
 [ext_resource type="Script" uid="uid://c1yytj7mr1o41" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://bwa8eclgjjttv" path="res://scenes/ui.tscn" id="2_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://bei85eb76qplj" path="res://assets/icon.svg" id="3_qhqgy"]
-[ext_resource type="PackedScene" uid="uid://cpvymmivxx1s8" path="res://fist2.tscn" id="4_dqkch"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sh265"]
 
@@ -33,5 +32,3 @@ player = NodePath("..")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dqkch")
-
-[node name="Fist" parent="." instance=ExtResource("4_dqkch")]

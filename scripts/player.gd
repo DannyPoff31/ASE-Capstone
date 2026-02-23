@@ -1,8 +1,5 @@
+class_name Player
 extends Entity
-@onready var timer: Timer = $Timer
-
-#func _ready() -> void:
-	#setPos(Vector2(0,-2))
 
 func _process(delta: float) -> void:
 	match state:

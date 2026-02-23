@@ -1,102 +1,89 @@
 class_name Entity
 extends CharacterBody2D
 
-const weapons: PackedScene = preload("res://scenes/weapon.tscn")
-
 @export var tiles : Node
 @export var sprite : AnimatedSprite2D
-@export var max_speed := 8
-@export var weapon : Weapon
-var rot_speed := 1
-var speed := 2
-var destination: Vector2
+@export var dir := Vector2(0, -1)
 
-const SPEED_MODIFIER = 1000
-
-var move_state = IDLE
-var turn_state = IDLE
+var pos : Vector2
+var weapon : Weapon
 
 enum {
 	MOVE, 
-	LEFT,
-	RIGHT,
-	BACK,
 	IDLE
 }
 
+var state = IDLE
+
 func _ready() -> void:
-	pass
-	# weapon = weapons.instantiate()
+	pos = tiles.findTile(position)
+	position = tiles.findCoord(pos)
+	turn(dir)
+	tiles.occupyTile(self, pos)
 
-func turn(params: Array) -> void:
-	var options = params[1].split("")
-	var paramIndex = 2
-	if(options[0] == "-"):
-		for op in options:
-			if(op == "l"): # rotates the player left
-				turn_state = LEFT
-			if(op == "r"): # rotates the player right
-				turn_state = RIGHT
-			if(op == "s"): # modifies rotation speed
-				rot_speed = int(params[paramIndex])
-				paramIndex + 1
-			if(op == "t"):
-				rot_speed = params[paramIndex]
-				paramIndex + 1
-			if(op == "q"):
-				turn_state = IDLE
+func setPos(value: Vector2) -> void:
+	pos = value
+	state = MOVE
+	print("pso set")
+
+func move(speed: float):
+	var targetCoords = tiles.findCoord(pos)
+	var temp = targetCoords - position
+	print("LOG")
+	print(targetCoords)
+	print(temp)
+	print(position)
+	
+	if(position.y > (targetCoords.y + .1)):#Vector2(.1, .1))):
+		velocity = speed * dir
+	elif(position.y < (targetCoords.y - .1)):#Vector2(.1, .1))):
+		velocity = speed * -dir
 	else:
-		print("error: comand options begin with a \"-\"")
+		state = IDLE
+		print("destination reached")
 
-func move(params: Array) -> void:
-	var options = params[1].split("")
-	var paramIndex = 2
-	
-	move_state = MOVE
-	if(options[0] == "-"):
-		for op in options:
-			if(op == "l"): 
-				move_state = LEFT
-			if(op == "r"):
-				move_state = RIGHT
-			if(op == "b"):
-				move_state = BACK
-			if(op == "s"):
-				speed = int(params[paramIndex])
-				paramIndex + 1
-			if(op == "t"):
-				destination = position + (int(params[paramIndex]) * getVectRot(sprite.rotation))
-				print("destination set: ", destination, " | current position: ", position)
-				paramIndex + 1
-			if(op == "q"):
-				move_state = IDLE
-				velocity = Vector2(0, 0)
-	else:
-		print("error: comand options begin with a \"-\"")
-
-func _physics_process(delta: float) -> void:
-	
-	if(turn_state == LEFT):
-		sprite.rotation += clamp(-rot_speed, 1, 5) * delta
-	if(turn_state == RIGHT):
-		sprite.rotation += clamp(rot_speed, 1, 5) * delta
-	if(move_state == MOVE):
-		velocity = clamp(speed, 1, max_speed) * SPEED_MODIFIER * getVectRot(sprite.rotation) * delta
-	if(move_state == LEFT):
-		velocity = clamp(speed, 1, max_speed) * SPEED_MODIFIER * getVectRot(sprite.rotation - deg_to_rad(90)) * delta
-	if(move_state == RIGHT):
-		velocity = clamp(speed, 1, max_speed) * SPEED_MODIFIER * getVectRot(sprite.rotation + deg_to_rad(90)) * delta
-	if(move_state == BACK):
-		velocity = clamp(speed, 1, max_speed) * SPEED_MODIFIER * getVectRot(sprite.rotation + deg_to_rad(180)) * delta
-	
-	# Might implement a way to move a given amount of space
-	#if(position > destination - Vector2(-1, -1) && position < destination + Vector2(1, 1)):
-		#print("desitnaiton reached")
-		#move_state == IDLE
-	
-	
 	move_and_slide()
 
-# Gets the vector of a given degree
-func getVectRot(rot: float) -> Vector2:
-	return Vector2(-sin(rot), cos(rot))
+func moveTowards(target: Vector2) -> void:
+	pass
+
+func wait() -> void:
+	await get_tree().create_timer(1.0).timeout
+
+func entAttk(value: String) -> void:
+	print(tiles.layer.get_neighbor_cell(pos, 12))
+	
+
+func turn(value: Vector2) -> void:
+	dir = value
+	
+	if(value.x == 1):
+		sprite.rotation = deg_to_rad(90)
+	elif(value.x == -1):
+		sprite.rotation = deg_to_rad(270)
+	elif(value.y == 1):
+		sprite.rotation = deg_to_rad(180)
+	elif(value.y == -1):
+		sprite.rotation = deg_to_rad(0)
+	else:
+		print("X or Y should either be 1 or -1")
+
+func turnRight() -> void:
+	if(dir.x == 1):
+		turn(Vector2(0,1))
+	elif(dir.x == -1):
+		turn(Vector2(0,-1))
+	elif(dir.y == 1):
+		turn(Vector2(-1,0))
+	elif(dir.y == -1):
+		turn(Vector2(1,0))
+
+func turnLeft() -> void:
+	if(dir.x == 1):
+		turn(Vector2(0,-1))
+	elif(dir.x == -1):
+		turn(Vector2(0,1))
+	elif(dir.y == 1):
+		turn(Vector2(1,0))
+	elif(dir.y == -1):
+		turn(Vector2(-1,0))

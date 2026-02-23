@@ -16,18 +16,3 @@ marp: true
 ### Features and Requirements:
 0 / 6
 0 / 14
-
----
-
-# Week 5
-
-## Description
-
-- Player can now move and turn based on terminal input
-- Created an enemy with a very simple "script"
-
-### Loc: 449
-
-### Features and Requirements:
-0 / 6
-0 / 14
