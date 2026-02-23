@@ -1,14 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bicsbdnsql4mg"]
+[gd_scene load_steps=6 format=3 uid="uid://bicsbdnsql4mg"]
 
 [ext_resource type="PackedScene" uid="uid://dtfpa0xg1x4ep" path="res://scenes/tiles.tscn" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://tmglr8s42xw2" path="res://scripts/main.gd" id="1_sugp2"]
 [ext_resource type="PackedScene" uid="uid://col3grldrcfy4" path="res://scenes/player.tscn" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://bbrwjfggaa6h1" path="res://scenes/test.tscn" id="2_tefeu"]
+[ext_resource type="PackedScene" uid="uid://bkw127ruh7s6d" path="res://scenes/enemy.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_sugp2")
+
+[node name="TEST" parent="." instance=ExtResource("2_tefeu")]
+position = Vector2(-190, -68)
 
 [node name="Tiles" parent="." instance=ExtResource("1_0wfyh")]
 
 [node name="CharacterBody2D" parent="." node_paths=PackedStringArray("tiles") instance=ExtResource("2_sugp2")]
 position = Vector2(112, 76)
+tiles = NodePath("../Tiles")
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("tiles") instance=ExtResource("4_jyhfs")]
 tiles = NodePath("../Tiles")

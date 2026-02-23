@@ -20,14 +20,15 @@ animations = [{
 [node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_g2els")
 sprite = NodePath("AnimatedSprite2D")
+playerDir = Vector2(0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_sh265")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ui" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_qhqgy")]
-player = NodePath("..")
+[node name="ui" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("2_qhqgy")]
+parent = NodePath("..")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.3, 0.3)
