@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d06g7neab81nj"]
+
+[ext_resource type="Script" uid="uid://bbbpxed7bs8wv" path="res://scripts/fist.gd" id="1_sufki"]
+[ext_resource type="Script" uid="uid://uu6aelv7ltbx" path="res://scripts/weapon.gd" id="2_vi7li"]
+
+[node name="Fist" type="Node"]
+script = ExtResource("1_sufki")
+metadata/_custom_type_script = "uid://bbbpxed7bs8wv"
+
+[node name="Weapon" type="Node" parent="."]
+script = ExtResource("2_vi7li")
+metadata/_custom_type_script = "uid://uu6aelv7ltbx"
