@@ -1,89 +1,93 @@
 class_name Entity
 extends CharacterBody2D
 
-@export var tiles : Node
 @export var sprite : AnimatedSprite2D
-@export var dir := Vector2(0, -1)
+const SPEED_MULTIPLIER := 1000
 
-var pos : Vector2
-var weapon : Weapon
+var health: int
+var max_speed:= 8
+var speed:= 2
+var rot_speed:= 1
 
 enum {
-	MOVE, 
-	IDLE
+	FOREWARD, 
+	LEFT,
+	RIGHT,
+	BACK,
+	IDLE,
 }
 
-var state = IDLE
+var move_state = IDLE
+var turn_state = IDLE
 
 func _ready() -> void:
-	pos = tiles.findTile(position)
-	position = tiles.findCoord(pos)
-	turn(dir)
-	tiles.occupyTile(self, pos)
-
-func setPos(value: Vector2) -> void:
-	pos = value
-	state = MOVE
-	print("pso set")
-
-func move(speed: float):
-	var targetCoords = tiles.findCoord(pos)
-	var temp = targetCoords - position
-	print("LOG")
-	print(targetCoords)
-	print(temp)
-	print(position)
-	
-	if(position.y > (targetCoords.y + .1)):#Vector2(.1, .1))):
-		velocity = speed * dir
-	elif(position.y < (targetCoords.y - .1)):#Vector2(.1, .1))):
-		velocity = speed * -dir
-	else:
-		state = IDLE
-		print("destination reached")
-
-	move_and_slide()
-
-func moveTowards(target: Vector2) -> void:
 	pass
 
-func wait() -> void:
-	await get_tree().create_timer(1.0).timeout
+func take_damage(damage: int) -> void:
+	health - damage
+	if(health <= 0):
+		die()
 
-func entAttk(value: String) -> void:
-	print(tiles.layer.get_neighbor_cell(pos, 12))
+func die() -> void:
+	pass
+
+func move(params: Array) -> void:
+	var options = params[1].split("")
+	var paramIndex = 2
 	
+	if(options[0] == "-"):
+		for op in options:
+			match op:
+				"f":
+					move_state = FOREWARD
+				"l":
+					move_state = LEFT
+				"r":
+					move_state = RIGHT
+				"b":
+					move_state = BACK
+				"s":
+					speed = int(params[paramIndex])
+					paramIndex += 1
+				"q":
+					move_state = IDLE
+					velocity = Vector2(0,0)
 
-func turn(value: Vector2) -> void:
-	dir = value
+func turn(params: Array) -> void:
+	var options = params[1].split("")
+	var paramIndex = 2
 	
-	if(value.x == 1):
-		sprite.rotation = deg_to_rad(90)
-	elif(value.x == -1):
-		sprite.rotation = deg_to_rad(270)
-	elif(value.y == 1):
-		sprite.rotation = deg_to_rad(180)
-	elif(value.y == -1):
-		sprite.rotation = deg_to_rad(0)
-	else:
-		print("X or Y should either be 1 or -1")
+	if(options[0] == "-"):
+		for op in options:
+			match op:
+				"l":
+					turn_state = LEFT
+				"r":
+					turn_state = RIGHT
+				"s":
+					rot_speed = int(params[paramIndex])
+					paramIndex += 1
+				"q":
+					turn_state = IDLE
 
-func turnRight() -> void:
-	if(dir.x == 1):
-		turn(Vector2(0,1))
-	elif(dir.x == -1):
-		turn(Vector2(0,-1))
-	elif(dir.y == 1):
-		turn(Vector2(-1,0))
-	elif(dir.y == -1):
-		turn(Vector2(1,0))
+func cancel_process() -> void:
+	move(["","-q"])
+	turn(["","-q"])
 
-func turnLeft() -> void:
-	if(dir.x == 1):
-		turn(Vector2(0,-1))
-	elif(dir.x == -1):
-		turn(Vector2(0,1))
-	elif(dir.y == 1):
-		turn(Vector2(1,0))
-	elif(dir.y == -1):
-		turn(Vector2(-1,0))
+func rot_to_vect(rot: float) -> Vector2:
+	return Vector2(-sin(rot), cos(rot))
+
+func _physics_process(delta: float) -> void:
+	if(move_state == FOREWARD):
+		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation) * SPEED_MULTIPLIER * delta
+	if(move_state == LEFT):
+		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation - deg_to_rad(90)) * SPEED_MULTIPLIER * delta
+	if(move_state == RIGHT):
+		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(90)) * SPEED_MULTIPLIER * delta
+	if(move_state == BACK):
+		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
+	if(turn_state == LEFT):
+		sprite.rotation += clamp(rot_speed, 1, max_speed) * delta
+	if(turn_state == RIGHT):
+		sprite.rotation -= clamp(rot_speed, 1, max_speed) * delta
+	move_and_slide()

@@ -1,6 +1,7 @@
 extends Control
 
 @export var menu : ColorRect
+@export var terminal_text : RichTextLabel
 @export var text : LineEdit
 @export var player : CharacterBody2D
 
@@ -12,58 +13,32 @@ func _ready() -> void:
 	menu.size = size
 	text.size.x = size.x
 
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _input(event: InputEvent) -> void:
+	if(event.is_action_pressed("proc_cancel")):
+		print("pressed")
+		player.cancel_process()
 	
 func openMenu() -> void:
 	if(!isMenuOpen):
 		menu.position.y = 0
 		isMenuOpen = true
+		var inventory_content = player.inventory.get_folders()
+		for item in inventory_content:
+			terminal_text.text += "%s %10d \n" % [item, len(item)]
+		text.release_focus()
+		text.editable = false
+		
 
 func closeMenu() -> void:
 	if(isMenuOpen):
 		menu.position.y = size.y
 		isMenuOpen = false
+		text.grab_focus()
+		text.editable = true
 
-func moveDir(dir) -> void:
-	if(dir == "c"):
-		while(true):
-			var move = player.pos + player.dir
-			player.move(move)
-			await get_tree().create_timer(1.0).timeout
-	elif(dir == "r"):
-		var move : Vector2
-		move.x = player.pos.x - player.dir.y
-		move.y = player.pos.y + player.dir.x
-		
-		player.setPos(move)
-		#player.move(move, 1)
-	elif(dir == "l"):
-		var move : Vector2
-		move.x = player.pos.x + player.dir.y
-		move.y = player.pos.y - player.dir.x
-		
-		player.setPos(move)
-	elif(dir == "b"):
-		var move = player.pos - player.dir
-		player.setPos(move)
-	else:
-		print("Invalid modifyier to move command")
-
-func turnDir(dir) -> void:
-	if(dir == "l"):
-		player.turnLeft()
-	elif(dir == "r"):
-		player.turnRight()
-	else:
-		print("Invalid modifier to turn command")
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	var text = new_text.replace(" ", "")
-	text = text.split("-")
+	var text = new_text.split(" ")
 
 	match text[0]:
 		# Menu
@@ -78,18 +53,15 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 
 		# Movement
 		"move":
-			if(len(text) == 1):
-				var move = player.pos + player.dir
-				player.setPos(move)
-			elif(len(text) == 2):
-				moveDir(text[1])
+			if(len(text) > 1):
+				player.move(text)
 			else:
-				print("Incorrect format for command")
+				print("This command needs at least one option")
 		"turn":
-			if(len(text) == 2):
-				turnDir(text[1])
+			if(len(text) > 1):
+				player.turn(text)
 			else:
-				print("Incorrect format for command")
+				print("This command needs at least one option")
 
 		"attack":
 			player.entAttk(text[0])

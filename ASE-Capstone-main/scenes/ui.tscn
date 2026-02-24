@@ -1,10 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://bwa8eclgjjttv"]
 
 [ext_resource type="Script" uid="uid://ccjsn33hwny2" path="res://scripts/ui.gd" id="1_nt7q6"]
-[ext_resource type="Script" uid="uid://d0kd2cy6o7v2r" path="res://scripts/line_edit.gd" id="2_x4jx1"]
+[ext_resource type="Script" uid="uid://d0kd2cy6o7v2r" path="res://scenes/line_edit.gd" id="2_x4jx1"]
 
-[node name="UI" type="Control" node_paths=PackedStringArray("menu", "terminal_text", "text")]
-z_index = 2
+[node name="ui" type="Control" node_paths=PackedStringArray("menu", "text")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -18,12 +17,10 @@ offset_bottom = 324.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nt7q6")
-menu = NodePath("Inventory")
-terminal_text = NodePath("Inventory/TerminalText")
+menu = NodePath("FullScreen")
 text = NodePath("LineEdit")
 
-[node name="Inventory" type="ColorRect" parent="."]
-z_index = 1
+[node name="FullScreen" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -37,18 +34,6 @@ offset_bottom = 972.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
-
-[node name="TerminalText" type="RichTextLabel" parent="Inventory"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 1
