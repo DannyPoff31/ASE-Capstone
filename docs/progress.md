@@ -49,7 +49,7 @@ marp: true
 0 / 6
 3 / 14
 
-# Week 6
+# Week 7
 
 ## Description
 
@@ -58,7 +58,7 @@ marp: true
 - player can pick up and use items
 - player can see folders and what is in them
 
-### Loc: 179
+### Loc: 285
 
 ### Features and Requirements:
 2 / 6 (33%)
