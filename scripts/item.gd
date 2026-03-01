@@ -8,5 +8,5 @@ func _ready() -> void:
 	collision_mask = 0
 
 
-func use_item() -> void:
+func use_item(player : Player) -> void:
 	pass

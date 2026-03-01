@@ -3,6 +3,9 @@ extends Entity
 
 @export var inventory:= Node
 
+func open() -> void:
+	isAttacking = true
+	hit_box.open()
 
 func die() -> void:
 	queue_free()

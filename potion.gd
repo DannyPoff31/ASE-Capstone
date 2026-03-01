@@ -1,7 +1,8 @@
 extends Item
 
 func _ready() -> void:
-	item_name = "health potion"
+	super()
+	item_name = "health_potion"
 
-func use_item() -> void:
-	owner.health += 5
+func use_item(player : Player) -> void:
+	player.health += 5

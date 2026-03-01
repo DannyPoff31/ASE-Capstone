@@ -1,9 +1,9 @@
 class_name Inventory
 extends Node
 
-var weapons: Array = ["Weapons", "fist", "sword"]
-var items: Array = ["Items", "potion"]
-var scripts: Array = ["Scripts"]
+var weapons: Array = []
+var items: Array = []
+var scripts: Array = []
 
 func _ready() -> void:
 	pass
@@ -16,4 +16,4 @@ func get_item(i : int) -> Item:
 	return items[i]
 
 func get_folders() -> Array:
-	return [weapons[0], items[0], scripts[0]]
+	return ["Weapons", "Items", "Scripts"]

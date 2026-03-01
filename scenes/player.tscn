@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://col3grldrcfy4"]
+[gd_scene load_steps=28 format=3 uid="uid://col3grldrcfy4"]
 
 [ext_resource type="Script" uid="uid://c1yytj7mr1o41" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://bwa8eclgjjttv" path="res://scenes/ui.tscn" id="2_qhqgy"]
@@ -105,6 +105,10 @@ region = Rect2(192, 0, 32, 32)
 atlas = ExtResource("5_fjrip")
 region = Rect2(224, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
+atlas = ExtResource("5_fjrip")
+region = Rect2(224, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_4ni07"]
 animations = [{
 "frames": [],
@@ -146,6 +150,20 @@ animations = [{
 "loop": false,
 "name": &"fire",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjrip")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"open",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qlg0r"]
@@ -161,12 +179,12 @@ health = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ui" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_qhqgy")]
+[node name="ui" parent="Camera2D" node_paths=PackedStringArray("player") instance=ExtResource("2_qhqgy")]
 offset_left = -561.0
 offset_top = -333.0
 offset_right = 591.0
 offset_bottom = 315.0
-player = NodePath("..")
+player = NodePath("../..")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -186,9 +204,7 @@ shape = SubResource("CircleShape2D_fjrip")
 z_index = 1
 position = Vector2(0.589183, 33.2888)
 sprite_frames = SubResource("SpriteFrames_4ni07")
-animation = &"fire"
-frame = 9
-frame_progress = 1.0
+animation = &"open"
 
 [node name="HurtBox" type="Area2D" parent="PlayerSprite"]
 scale = Vector2(1, 1)
