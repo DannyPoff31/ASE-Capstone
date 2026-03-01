@@ -13,10 +13,13 @@ func _ready() -> void:
 	menu.size = size
 	text.size.x = size.x
 
+func use() -> void:
+	print(player.inventory.get_item(2))
+
 func _input(event: InputEvent) -> void:
 	if(event.is_action_pressed("proc_cancel")):
-		print("pressed")
 		player.cancel_process()
+		closeMenu()
 	
 func openMenu() -> void:
 	if(!isMenuOpen):
@@ -24,7 +27,7 @@ func openMenu() -> void:
 		isMenuOpen = true
 		var inventory_content = player.inventory.get_folders()
 		for item in inventory_content:
-			terminal_text.text += "%s %10d \n" % [item, len(item)]
+			terminal_text.text += "%s %10d \n" % [item, len(player.inventory.items)]
 		text.release_focus()
 		text.editable = false
 		
@@ -33,8 +36,8 @@ func closeMenu() -> void:
 	if(isMenuOpen):
 		menu.position.y = size.y
 		isMenuOpen = false
-		text.grab_focus()
 		text.editable = true
+		text.grab_focus()
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
@@ -64,7 +67,11 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 				print("This command needs at least one option")
 
 		"attack":
-			player.entAttk(text[0])
+			player.attack()
+		"health":
+			print(player.health)
+		"use":
+			use()
 
 
 		# END

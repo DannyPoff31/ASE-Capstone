@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkw127ruh7s6d"]
+[gd_scene load_steps=20 format=3 uid="uid://bkw127ruh7s6d"]
 
 [ext_resource type="Script" uid="uid://cjnx332k0skce" path="res://scripts/enemy.gd" id="1_7p1mj"]
-[ext_resource type="Texture2D" uid="uid://bg0kd6c2kresh" path="res://assets/tree1.png" id="2_md0e3"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://bvkes126yw2w0" path="res://assets/tree1.png" id="2_md0e3"]
+[ext_resource type="Script" uid="uid://xkte3xigoahg" path="res://scripts/HurtBox.gd" id="3_4ra3w"]
+[ext_resource type="Script" uid="uid://6vccd5i1ssda" path="res://scripts/HitBox.gd" id="4_c4w8v"]
+[ext_resource type="Texture2D" uid="uid://chba60jkxlrty" path="res://assets/fire.png" id="5_xwavj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ra3w"]
 atlas = ExtResource("2_md0e3")
@@ -27,18 +28,119 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("sprite")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5uy6h"]
+size = Vector2(51.5, 66)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nenq2"]
+radius = 17.5285
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipns3"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qclf"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8i8w"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otmr2"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtq4b"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0cyh"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0wcc"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s1ycm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md484")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipns3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qclf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8i8w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otmr2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtq4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0cyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0wcc")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"fire",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "attack_sprite", "hit_box")]
 script = ExtResource("1_7p1mj")
 sprite = NodePath("AnimatedSprite2D")
+attack_sprite = NodePath("AnimatedSprite2D/HitBox/AnimatedSprite2D")
+hit_box = NodePath("AnimatedSprite2D/HitBox")
+health = 4
 metadata/_custom_type_script = "uid://y6ljt0k753hl"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_4gyqm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_c4w8v")
+
+[node name="HurtBox" type="Area2D" parent="AnimatedSprite2D"]
+script = ExtResource("3_4ra3w")
+metadata/_custom_type_script = "uid://xkte3xigoahg"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/HurtBox"]
+position = Vector2(1.75, 0.5)
+shape = SubResource("RectangleShape2D_5uy6h")
+
+[node name="HitBox" type="Area2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("collision_shape")]
+script = ExtResource("4_c4w8v")
+collision_shape = NodePath("CollisionShape2D")
+metadata/_custom_type_script = "uid://6vccd5i1ssda"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/HitBox"]
+position = Vector2(46, 2)
+shape = SubResource("CircleShape2D_nenq2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AnimatedSprite2D/HitBox"]
+position = Vector2(50, 0)
+rotation = -1.5708
+sprite_frames = SubResource("SpriteFrames_s1ycm")
+animation = &"fire"
+frame = 9
+frame_progress = 1.0
 
 [node name="Timer" type="Timer" parent="."]
 

@@ -2,12 +2,15 @@ class_name Entity
 extends CharacterBody2D
 
 @export var sprite : AnimatedSprite2D
-const SPEED_MULTIPLIER := 1000
+@export var attack_sprite : AnimatedSprite2D
+@export var hit_box : HitBox
+const SPEED_MULTIPLIER : int = 1000
 
-var health: int
-var max_speed:= 8
-var speed:= 2
-var rot_speed:= 1
+@export var health: int
+var max_speed: int = 8
+var speed: int = 2
+var rot_speed: int = 1
+var isAttacking: bool = false
 
 enum {
 	FOREWARD, 
@@ -21,15 +24,21 @@ var move_state = IDLE
 var turn_state = IDLE
 
 func _ready() -> void:
-	pass
+	sprite.play("default")
 
 func take_damage(damage: int) -> void:
-	health - damage
+	health -= damage
 	if(health <= 0):
 		die()
 
 func die() -> void:
-	pass
+	print("You Died!")
+
+func attack() -> void:
+	isAttacking = true
+	hit_box.attack()
+
+
 
 func move(params: Array) -> void:
 	var options = params[1].split("")
@@ -78,16 +87,22 @@ func rot_to_vect(rot: float) -> Vector2:
 	return Vector2(-sin(rot), cos(rot))
 
 func _physics_process(delta: float) -> void:
-	if(move_state == FOREWARD):
+	if((move_state == FOREWARD) && !isAttacking):
+		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation) * SPEED_MULTIPLIER * delta
-	if(move_state == LEFT):
+	if((move_state == LEFT) && !isAttacking):
+		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation - deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-	if(move_state == RIGHT):
+	if((move_state == RIGHT) && !isAttacking):
+		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-	if(move_state == BACK):
+	if((move_state == BACK) && !isAttacking):
+		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
-	if(turn_state == LEFT):
+	if((move_state ==IDLE) && !isAttacking):
+		sprite.play("default")
+	if((turn_state == RIGHT) && !isAttacking):
 		sprite.rotation += clamp(rot_speed, 1, max_speed) * delta
-	if(turn_state == RIGHT):
+	if((turn_state == LEFT) && !isAttacking):
 		sprite.rotation -= clamp(rot_speed, 1, max_speed) * delta
 	move_and_slide()

@@ -76,5 +76,6 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "root@player:~"
 
+[connection signal="gui_input" from="LineEdit" to="LineEdit" method="_on_gui_input"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="text_submitted" from="LineEdit" to="LineEdit" method="_on_text_submitted"]
