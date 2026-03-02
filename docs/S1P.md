@@ -52,3 +52,17 @@ Requirements: 7 / 7 (100%)
 - tile rework
 
 ---
+
+## Learning With AI
+### Terminals
+
+- Emulator, Shell, OS
+- Command Parsing
+  - Lexing
+  - Parsing
+  - Expansions
+    - brace, tilde, parameter, command, arithmetic, word splitting, globbing
+  - Redirections
+  - Execution
+
+---
