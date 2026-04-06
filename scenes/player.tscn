@@ -179,12 +179,9 @@ health = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ui" parent="Camera2D" node_paths=PackedStringArray("player") instance=ExtResource("2_qhqgy")]
-offset_left = -561.0
-offset_top = -333.0
-offset_right = 591.0
-offset_bottom = 315.0
+[node name="ui" parent="Camera2D" node_paths=PackedStringArray("player", "inv") instance=ExtResource("2_qhqgy")]
 player = NodePath("../..")
+inv = NodePath("../../Inventory")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -207,7 +204,6 @@ sprite_frames = SubResource("SpriteFrames_4ni07")
 animation = &"open"
 
 [node name="HurtBox" type="Area2D" parent="PlayerSprite"]
-scale = Vector2(1, 1)
 script = ExtResource("5_tuyoq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSprite/HurtBox"]

@@ -12,7 +12,7 @@ texture = ExtResource("2_gdt2y")
 LineEdit/fonts/font = ExtResource("2_yev5y")
 LineEdit/styles/normal = SubResource("StyleBoxTexture_wm3ai")
 
-[node name="UI" type="Control" node_paths=PackedStringArray("menu", "terminal_text", "script_edit", "text")]
+[node name="UI" type="Control" node_paths=PackedStringArray("menu", "terminal_text", "text")]
 z_index = 2
 layout_mode = 3
 anchors_preset = 8
@@ -30,7 +30,6 @@ theme = SubResource("Theme_yev5y")
 script = ExtResource("1_nt7q6")
 menu = NodePath("FullMenu")
 terminal_text = NodePath("FullMenu/TerminalText")
-script_edit = NodePath("FullMenu/ScriptEdit")
 text = NodePath("CommandLine/LineEdit")
 
 [node name="FullMenu" type="ColorRect" parent="."]
@@ -60,10 +59,8 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-scroll_active = false
-scroll_following = true
 
-[node name="ScriptEdit" type="TextEdit" parent="FullMenu"]
+[node name="ScriptEdit" type="LineEdit" parent="FullMenu"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -116,7 +113,6 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/normal_font = ExtResource("2_yev5y")
 text = "root@player:~"
-scroll_active = false
 
 [connection signal="gui_input" from="CommandLine/LineEdit" to="CommandLine/LineEdit" method="_on_gui_input"]
 [connection signal="text_submitted" from="CommandLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
