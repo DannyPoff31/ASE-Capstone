@@ -14,7 +14,7 @@ var is_script_open := false
 func _ready() -> void:
 	size = get_viewport().size
 
-func use(item: Item) -> void:
+func use(item:= "") -> void: ## rework !!!!
 	for i in player.inventory.items:
 		if(i.item_name == item):
 			print("Item found")
@@ -38,7 +38,7 @@ func get_main_folders() -> void:
 		terminal_text.text += "%s %10d \n" % [item, player.inventory.folder_size(item)]
 	terminal_text.text += "\n"
 
-func get_folder(folder: String) -> void:
+func get_folder(folder:= "") -> void:
 	var arr: Array
 	if(folder == "Weapons"):
 		arr = inv.get_all_weapons()
@@ -62,14 +62,16 @@ func new_script() -> void:
 	text.release_focus()
 	script_edit.grab_focus()
 
-func create_script(script_name) -> void:
-	inv.add_script(RScript.new(script_name, script_edit.text))
-	closeMenu()
-	text.grab_focus()
+func create_script(script_name = "") -> void:
+	if(script_name != ""):
+		inv.add_script(RScript.new(script_name, script_edit.text))
+		closeMenu()
+		text.grab_focus()
 
-func use_script(rscript) -> void:
-	player.is_script = true
-	player.rscript = inv.get_script_by_name(rscript).get_content()
+func use_script(rscript = "") -> void:
+	if(rscript != ""):
+		player.is_script = true
+		player.rscript = inv.get_script_by_name(rscript).get_content()
 
 func closeMenu() -> void:
 	if(isMenuOpen):

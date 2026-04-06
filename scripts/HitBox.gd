@@ -2,7 +2,7 @@ class_name HitBox
 extends Area2D
 
 @export var collision_shape : CollisionShape2D
-var damage : int = 2
+var damage : String = "2"
 
 func _ready() -> void:
 	collision_shape.disabled = true
