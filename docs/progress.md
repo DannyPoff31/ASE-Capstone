@@ -49,6 +49,8 @@ marp: true
 0 / 6
 3 / 14
 
+---
+
 # Week 7
 
 ## Description
@@ -63,3 +65,32 @@ marp: true
 ### Features and Requirements:
 2 / 6 (33%)
 7 / 14 (50%)
+
+---
+
+# Week 12
+
+## Description
+
+- busy
+
+### Loc: 0
+
+### Features and Requirements:
+2 / 6 (33%)
+7 / 14 (50%)
+
+# Week 13
+
+## Description
+
+- refactored how user input is handled to allow for scripts
+- player can create and use scripts
+- scripts have the option to be conditional
+- enemies can hold and use scripts
+
+### Loc: 814
+
+### Features and Requirements:
+3 / 6 (50%)
+9 / 14 (64%)
