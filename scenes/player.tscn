@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://col3grldrcfy4"]
+[gd_scene load_steps=30 format=3 uid="uid://col3grldrcfy4"]
 
 [ext_resource type="Script" uid="uid://c1yytj7mr1o41" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://bwa8eclgjjttv" path="res://scenes/ui.tscn" id="2_qhqgy"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://chba60jkxlrty" path="res://assets/fire.png" id="5_fjrip"]
 [ext_resource type="Script" uid="uid://6vccd5i1ssda" path="res://scripts/HitBox.gd" id="5_qlg0r"]
 [ext_resource type="Script" uid="uid://xkte3xigoahg" path="res://scripts/HurtBox.gd" id="5_tuyoq"]
+[ext_resource type="Script" uid="uid://bhgxmu52hrd3v" path="res://scenes/radius.gd" id="7_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
 atlas = ExtResource("3_fjrip")
@@ -166,49 +167,61 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qlg0r"]
-size = Vector2(32.5, 32.5)
+[sub_resource type="CircleShape2D" id="CircleShape2D_smehm"]
+radius = 14.1137
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("inventory", "sprite", "attack_sprite", "hit_box")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ur7pv"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("inventory", "camera", "sprite", "attack_sprite", "hit_box")]
 script = ExtResource("1_g2els")
 inventory = NodePath("Inventory")
-sprite = NodePath("PlayerSprite")
-attack_sprite = NodePath("PlayerSprite/HitBox/AnimatedSprite2D")
-hit_box = NodePath("PlayerSprite/HitBox")
+camera = NodePath("Camera2D")
+sprite = NodePath("Sprite")
+attack_sprite = NodePath("Sprite/HitBox/AnimatedSprite2D")
+hit_box = NodePath("Sprite/HitBox")
 health = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ui" parent="Camera2D" node_paths=PackedStringArray("player", "inv") instance=ExtResource("2_qhqgy")]
-player = NodePath("../..")
-inv = NodePath("../../Inventory")
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
 
-[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+[node name="ui" parent="Camera2D/CanvasLayer" node_paths=PackedStringArray("player", "inv") instance=ExtResource("2_qhqgy")]
+player = NodePath("../../..")
+inv = NodePath("../../../Inventory")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 z_index = 1
-scale = Vector2(2.71563, 2.71563)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_dqkch")
 
-[node name="HitBox" type="Area2D" parent="PlayerSprite" node_paths=PackedStringArray("collision_shape")]
+[node name="HitBox" type="Area2D" parent="Sprite" node_paths=PackedStringArray("collision_shape")]
 scale = Vector2(1.25, 1.25)
 script = ExtResource("5_qlg0r")
 collision_shape = NodePath("CollisionShape2D")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSprite/HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/HitBox"]
 position = Vector2(0, 27.9862)
 shape = SubResource("CircleShape2D_fjrip")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PlayerSprite/HitBox"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite/HitBox"]
 z_index = 1
 position = Vector2(0.589183, 33.2888)
 sprite_frames = SubResource("SpriteFrames_4ni07")
 animation = &"open"
 
-[node name="HurtBox" type="Area2D" parent="PlayerSprite"]
+[node name="HurtBox" type="Area2D" parent="Sprite"]
 script = ExtResource("5_tuyoq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSprite/HurtBox"]
-shape = SubResource("RectangleShape2D_qlg0r")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/HurtBox"]
+shape = SubResource("CircleShape2D_smehm")
+
+[node name="Radius" type="Area2D" parent="Sprite"]
+scale = Vector2(3, 3)
+script = ExtResource("7_smehm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Radius"]
+shape = SubResource("CircleShape2D_ur7pv")
 
 [node name="Inventory" parent="." instance=ExtResource("4_dqkch")]
 
-[connection signal="animation_finished" from="PlayerSprite/HitBox/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_finished" from="Sprite/HitBox/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

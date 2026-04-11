@@ -2,6 +2,8 @@ class_name Player
 extends Entity
 
 @export var inventory:= Node
+@export var camera:= Camera2D
+@export var ui:= Control
 
 func open() -> void:
 	is_attacking = true

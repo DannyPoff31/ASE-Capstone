@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bicsbdnsql4mg"]
+[gd_scene load_steps=8 format=3 uid="uid://bicsbdnsql4mg"]
 
 [ext_resource type="PackedScene" uid="uid://dtfpa0xg1x4ep" path="res://scenes/tiles.tscn" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://tmglr8s42xw2" path="res://scripts/main.gd" id="1_sugp2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bkw127ruh7s6d" path="res://scenes/enemy.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://didxmi1pq3r5x" path="res://scenes/potion.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://celvuvmbnhs0m" path="res://scenes/chest.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" uid="uid://duf8hpt62kldj" path="res://enemy_test.tscn" id="7_o6xl0"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_sugp2")
@@ -24,3 +25,6 @@ position = Vector2(218, 284)
 [node name="Area2D" parent="." instance=ExtResource("6_tefeu")]
 position = Vector2(473, 46)
 scale = Vector2(2.32787, 2.32787)
+
+[node name="EnemyTest" parent="." instance=ExtResource("7_o6xl0")]
+scale = Vector2(0.0438364, 0.0438364)

@@ -3,7 +3,9 @@ extends CharacterBody2D
 
 @export var sprite : AnimatedSprite2D
 @export var attack_sprite : AnimatedSprite2D
+@onready var animSprite: AnimationPlayer = $Sprite/AnimationPlayer
 @export var hit_box : HitBox
+@onready var radius: Area2D = $Sprite/Radius
 const SPEED_MULTIPLIER : int = 1000
 
 @export var health: int
@@ -11,8 +13,14 @@ var max_speed: int = 8
 var speed: int = 2
 var rot_speed: int = 1
 var is_attacking: bool = false
-var is_script: bool = false
-var rscript: String
+var is_rscript: bool = false
+var rscript: Array
+var rscript_indx:= 0
+var is_cscript: bool = false
+var cscript: Array
+
+var can_move:= true
+var can_attack:= true
 
 enum {
 	FOREWARD, 
@@ -25,14 +33,21 @@ enum {
 var move_state = IDLE
 var turn_state = IDLE
 
+func truer() -> bool:
+	return true
+
 func _ready() -> void:
 	sprite.play("default")
-	
 
+func in_range() -> bool:
+	if(radius):
+		if(radius.in_range):
+			return true
+		return false
+	return false
 
 func take_damage(damage: String) -> void:
 	health -= int(damage)
-	print(health)
 	if(health <= 0):
 		die()
 
@@ -43,7 +58,16 @@ func attack() -> void:
 	is_attacking = true
 	hit_box.attack()
 
-
+func add_script(scr:= "") -> void:
+	if(scr != ""):
+		if(scr.contains(":")):
+			cscript = scr.split(";")
+			cscript.remove_at(len(cscript)-1)
+			is_cscript = true
+		else:
+			rscript = scr.split(";")
+			rscript.remove_at(len(rscript)-1)
+			is_rscript = true
 
 func move(params: String) -> void:
 	var speed_var = params.split("=")
@@ -88,53 +112,100 @@ func turn(params: String) -> void:
 				"q":
 					turn_state = IDLE
 
+func dash(direction:= "") -> void:
+	if(direction != ""):
+		if(can_move):
+			can_move = false
+			move("%ss=10" % direction)
+			get_tree().create_timer(1.0).timeout.connect(func(): dash_end())
+
+func dash_end() -> void:
+	can_move = true
+	move("-qs=2")
+
+func circle(direction:= "") -> void:
+	if(direction != "" && direction != "-b" && direction != "-f"):
+		var invert_dir: String
+		if(direction == "-r"):
+			invert_dir = "-l"
+		elif(direction == "-l"):
+			invert_dir = "-r"
+		if(can_move):
+			can_move = false
+			move("%ss=10" % direction)
+			turn("%s" % invert_dir)
+			get_tree().create_timer(2.0).timeout.connect(func(): circle_end())
+
+func circle_end() -> void:
+	can_move = true
+	move("-qs=2")
+	turn("-qs=2")
+
+func retreat() -> void:
+	can_move = false
+	move("-bs=10")
+	get_tree().create_timer(1.0).timeout.connect(func(): retreat_end())
+
+func retreat_end() -> void:
+	can_move = true
+	move("-qs=2")
+
 func cancel_process() -> void:
 	move("-q")
 	turn("-q")
-	is_script = false
+	is_rscript = false
+	is_cscript = false
 
 func rot_to_vect(rot: float) -> Vector2:
 	return Vector2(-sin(rot), cos(rot))
 
 func _physics_process(delta: float) -> void:
-	if((move_state == FOREWARD) && !is_attacking):
+	if((move_state == FOREWARD)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation) * SPEED_MULTIPLIER * delta
-	if((move_state == LEFT) && !is_attacking):
+	if((move_state == LEFT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation - deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-	if((move_state == RIGHT) && !is_attacking):
+	if((move_state == RIGHT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-	if((move_state == BACK) && !is_attacking):
+	if((move_state == BACK)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
-	if((move_state == IDLE) && !is_attacking):
+	if((move_state == IDLE)):
 		sprite.play("default")
 	if((turn_state == RIGHT)):
 		sprite.rotation += clamp(rot_speed, 1, max_speed) * delta
 	if((turn_state == LEFT)):
 		sprite.rotation -= clamp(rot_speed, 1, max_speed) * delta
 	move_and_slide()
-	if(is_script):
-		var arr = rscript.split(";")
-		arr.remove_at(len(arr)-1)
-		for i in arr:
-			if(i.contains(":")):
-				var if_text = i.split(":")
-				if(call(if_text[0].split("(")[1].split(")")[0])):
-					var text = if_text[1].split(" ")
-					var callable = Callable(self, text[0])
-					if(len(text) == 1):
-						if(callable.is_valid()):
-							callable.call()
-					elif(len(text) >= 2):
-						text.remove_at(0)
-						if(callable.is_valid()):
-							callable.callv(text)
-			else:
-				var text = i.split(" ")
-				var callable = Callable(self, text[0])
+	if(is_rscript):
+		if(can_move):
+			var text = rscript[rscript_indx].split(" ")
+			var callable = Callable(self, text[0])
+			if(len(text) == 1):
+				if(callable.is_valid()):
+					callable.call()
+					rscript_indx += 1
+			elif(len(text) >= 2):
+				text.remove_at(0)
+				if(callable.is_valid()):
+					callable.callv(text)
+					rscript_indx += 1
+		if(rscript_indx >= len(rscript)):
+			is_rscript = false
+			rscript_indx = 0
+	if(is_cscript):
+		for i in cscript:
+			print(i)
+			var if_text = i.split("(")[1].split(")")[0]
+			var text = i.split(":")[1].split(" ")
+			var if_callable = Callable(self, if_text)
+			var callable = Callable(self, text[0])
+			print(if_text)
+			print(if_callable.call())
+			print(text)
+			if(if_callable.call()): 
 				if(len(text) == 1):
 					if(callable.is_valid()):
 						callable.call()

@@ -10,23 +10,28 @@ extends Control
 var isMenuOpen := false
 var is_script_open := false
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	size = get_viewport().size
-
 func use(item:= "") -> void: ## rework !!!!
+	var ind:= 0
 	for i in player.inventory.items:
 		if(i.item_name == item):
-			print("Item found")
 			i.use_item(player)
+			player.inventory.items.remove_at(ind)
+			i.queue_free()
+		ind += 1
 
 func _input(event: InputEvent) -> void:
 	if(event.is_action_pressed("proc_cancel")):
 		player.cancel_process()
 		closeMenu()
-	
+	if(event.is_action_pressed("term_return")):
+		return_to_terminal()
+
+func return_to_terminal() -> void:
+	text.grab_focus()
+
 func openMenu() -> void:
 	if(!isMenuOpen):
+		menu.position.x = 0
 		menu.position.y = 0
 		isMenuOpen = true
 
@@ -68,10 +73,9 @@ func create_script(script_name = "") -> void:
 		closeMenu()
 		text.grab_focus()
 
-func use_script(rscript = "") -> void:
-	if(rscript != ""):
-		player.is_script = true
-		player.rscript = inv.get_script_by_name(rscript).get_content()
+func use_script(src = "") -> void:
+	if(src != ""):
+		player.add_script(inv.get_script_by_name(src).get_content())
 
 func closeMenu() -> void:
 	if(isMenuOpen):
@@ -93,7 +97,7 @@ func ls(folder = "") -> void:
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	var text = new_text.split(" ")
 
-	if(text[0] == "inv"):
+	if(text[0] == "inv" && len(text) >= 2):
 		var callable = Callable(self, text[1])
 		if(len(text) == 2):
 			if(callable.is_valid()):
@@ -110,7 +114,6 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 				callable.call()
 		elif(len(text) >= 2):
 			text.remove_at(0)
-			print(text)
 			if(callable.is_valid()):
 				callable.callv(text)
 

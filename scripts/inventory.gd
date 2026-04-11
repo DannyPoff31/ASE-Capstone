@@ -8,7 +8,7 @@ var items: Array = []
 var scripts: Array = []
 
 func _ready() -> void:
-	scripts.push_back(Scripts.new("something", "if(test_cond):attack;"))
+	scripts.push_back(Scripts.new("something", "if(truer):attack;"))
 	scripts.push_back(Scripts.new("test", "move -f;turn -rs=1;"))
 
 ### SETTERS ###
