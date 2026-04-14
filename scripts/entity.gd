@@ -1,10 +1,9 @@
 class_name Entity
 extends CharacterBody2D
 
-@export var sprite : AnimatedSprite2D
-@export var attack_sprite : AnimatedSprite2D
-@onready var animSprite: AnimationPlayer = $Sprite/AnimationPlayer
-@export var hit_box : HitBox
+@onready var sprite : AnimatedSprite2D = $Sprite
+@onready var attack_sprite : AnimatedSprite2D = $Sprite/HitBox/AnimatedSprite2D
+@onready var hit_box : HitBox = $Sprite/HitBox
 @onready var radius: Area2D = $Sprite/Radius
 const SPEED_MULTIPLIER : int = 1000
 
@@ -112,7 +111,7 @@ func turn(params: String) -> void:
 				"q":
 					turn_state = IDLE
 
-func dash(direction:= "") -> void:
+func dash(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
@@ -197,14 +196,10 @@ func _physics_process(delta: float) -> void:
 			rscript_indx = 0
 	if(is_cscript):
 		for i in cscript:
-			print(i)
 			var if_text = i.split("(")[1].split(")")[0]
 			var text = i.split(":")[1].split(" ")
 			var if_callable = Callable(self, if_text)
 			var callable = Callable(self, text[0])
-			print(if_text)
-			print(if_callable.call())
-			print(text)
 			if(if_callable.call()): 
 				if(len(text) == 1):
 					if(callable.is_valid()):
