@@ -8,7 +8,7 @@ extends CharacterBody2D
 const SPEED_MULTIPLIER : int = 1000
 
 @export var health: int
-var max_speed: int = 8
+var max_speed: int = 20
 var speed: int = 2
 var rot_speed: int = 1
 var is_attacking: bool = false
@@ -40,11 +40,12 @@ func _ready() -> void:
 
 func in_range() -> bool:
 	if(radius):
-		if(radius.in_range):
-			return true
-		return false
+		return radius.in_range
 	return false
 
+func ch_range(range_size: String) -> void:
+	if radius:
+		radius.shape.shape.set_radius(int(range_size))
 func take_damage(damage: String) -> void:
 	health -= int(damage)
 	if(health <= 0):
@@ -115,8 +116,8 @@ func dash(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
-			move("%ss=10" % direction)
-			get_tree().create_timer(1.0).timeout.connect(func(): dash_end())
+			move("%ss=15" % direction)
+			get_tree().create_timer(0.5).timeout.connect(func(): dash_end())
 
 func dash_end() -> void:
 	can_move = true
@@ -132,13 +133,14 @@ func circle(direction:= "") -> void:
 		if(can_move):
 			can_move = false
 			move("%ss=10" % direction)
-			turn("%s" % invert_dir)
-			get_tree().create_timer(2.0).timeout.connect(func(): circle_end())
+			turn("%ss=1" % invert_dir)
+			get_tree().create_timer(1.57).timeout.connect(func(): circle_end())
 
 func circle_end() -> void:
+	print(rad_to_deg(sprite.rotation))
 	can_move = true
 	move("-qs=2")
-	turn("-qs=2")
+	turn("-qs=1")
 
 func retreat() -> void:
 	can_move = false

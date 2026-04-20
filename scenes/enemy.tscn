@@ -69,8 +69,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5uy6h"]
-size = Vector2(51.5, 66)
+[sub_resource type="CircleShape2D" id="CircleShape2D_ipns3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nenq2"]
 radius = 17.5285
@@ -147,6 +146,8 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_md484"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_xwavj"]
+
 [node name="Enemy" type="CharacterBody2D" unique_id=1431928508]
 script = ExtResource("1_7p1mj")
 health = 4
@@ -163,8 +164,9 @@ script = ExtResource("3_4ra3w")
 metadata/_custom_type_script = "uid://xkte3xigoahg"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/HurtBox" unique_id=29897335]
-position = Vector2(1.75, 0.5)
-shape = SubResource("RectangleShape2D_5uy6h")
+position = Vector2(0, 2.9802322e-08)
+scale = Vector2(1.7625785, 1.8540635)
+shape = SubResource("CircleShape2D_ipns3")
 
 [node name="HitBox" type="Area2D" parent="Sprite" unique_id=680533924 node_paths=PackedStringArray("collision_shape")]
 script = ExtResource("4_c4w8v")
@@ -172,12 +174,11 @@ collision_shape = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://6vccd5i1ssda"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/HitBox" unique_id=317425539]
-position = Vector2(46, 2)
+position = Vector2(0, 44)
 shape = SubResource("CircleShape2D_nenq2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite/HitBox" unique_id=1548513419]
-position = Vector2(50, 0)
-rotation = -1.5708
+position = Vector2(0, 37)
 sprite_frames = SubResource("SpriteFrames_s1ycm")
 animation = &"fire"
 frame = 9
@@ -189,3 +190,6 @@ script = ExtResource("6_xwavj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Radius" unique_id=610722729]
 shape = SubResource("CircleShape2D_md484")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=468132884]
+shape = SubResource("CircleShape2D_xwavj")
