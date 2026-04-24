@@ -7,9 +7,10 @@ extends Control
 @export var player : CharacterBody2D
 @export var inv : Inventory
 @onready var command_line = $CommandLine/RichTextLabel
+@onready var file = JSON.parse_string(FileAccess.open("res://assets/manuel.json", FileAccess.READ).get_as_text())
 
-var directory: String = "player"
-var dir_list: Array = ["player", "inventory"]
+var directory: String = "plyr"
+var dir_list: Array = ["plyr", "inv"]
 var isMenuOpen := false
 var is_script_open := false
 var script_temp: String = ""
@@ -110,20 +111,28 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	if(parse_text[0] == "cd"):
 		if(parse_text[1] in dir_list):
 			directory = parse_text[1]
-			command_line.text = "root@player:~/%s" %directory
+			command_line.text = "root@player:~/%s$" %directory
 			return
-	if(parse_text[0] == "inv" && len(parse_text) >= 2):
-		var callable = Callable(self, parse_text[1])
-		if(len(parse_text) == 2):
+	if(parse_text[0] == "man"):
+		openMenu()
+		if(len(parse_text) == 1): 
+			script_edit.text = "%s\n" %parse_text[0]
+			script_edit.text += file.list
+		elif(parse_text[1] in file.commands): 
+			script_edit.text = "%s\n" %parse_text[1]
+			script_edit.text += file.commands[parse_text[1]]
+		return
+	if(directory == "inv" && parse_text[0] != ""):
+		print(parse_text)
+		var callable = Callable(self, parse_text[0])
+		if(len(parse_text) == 1):
 			if(callable.is_valid()):
 				callable.call()
-		elif(len(parse_text) >= 3):
-			parse_text.remove_at(0)
+		elif(len(parse_text) >= 2):
 			parse_text.remove_at(0)
 			if(callable.is_valid()):
-				print(parse_text)
 				callable.callv(parse_text)
-	elif(parse_text[0] != ""):
+	elif(directory == "plyr" && parse_text[0] != ""):
 		var callable = Callable(player, parse_text[0])
 		if(len(parse_text) == 1):
 			if(callable.is_valid()):

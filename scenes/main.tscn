@@ -13,15 +13,48 @@ script = ExtResource("1_sugp2")
 [node name="Tiles" parent="." unique_id=47209577 instance=ExtResource("1_0wfyh")]
 
 [node name="Player" parent="." unique_id=1530972082 instance=ExtResource("2_sugp2")]
-position = Vector2(222, 161)
+position = Vector2(222, 170)
+scale = Vector2(0.8604106, 0.8568665)
+start_dir = 180.0
 health = 2
 
 [node name="Enemy" parent="." unique_id=37261395 instance=ExtResource("4_jyhfs")]
-position = Vector2(343, 0)
+position = Vector2(40, -594)
+ready_rscript = Array[String](["walk", "walk", "walk", "turn_l"])
+ready_repeat = true
+ready_cscript = Array[String](["if(in_range):attack"])
 
 [node name="Potion" parent="." unique_id=179771917 instance=ExtResource("5_tbgi4")]
 position = Vector2(218, 284)
 
 [node name="Area2D" parent="." unique_id=583121102 instance=ExtResource("6_tefeu")]
-position = Vector2(473, 46)
+position = Vector2(2262, -940)
 scale = Vector2(2.32787, 2.32787)
+
+[node name="Corridor" type="Node" parent="." unique_id=1668757442]
+
+[node name="Enemy2" parent="Corridor" unique_id=1431928508 instance=ExtResource("4_jyhfs")]
+position = Vector2(796, -167)
+scale = Vector2(0.7762765, 0.7762765)
+ready_rscript = Array[String](["turn_r", "turn_r", "walk", "walk", "walk"])
+ready_cscript = Array[String](["if(in_range):attack"])
+
+[node name="Enemy3" parent="Corridor" unique_id=382652755 instance=ExtResource("4_jyhfs")]
+position = Vector2(988.00006, -172)
+rotation = -3.1415925
+scale = Vector2(0.7762765, 0.7762765)
+ready_rscript = Array[String](["walk", "walk", "walk", "turn_l", "turn_l"])
+ready_cscript = Array[String](["if(in_range):attack"])
+
+[node name="Enemy4" parent="Corridor" unique_id=315627628 instance=ExtResource("4_jyhfs")]
+position = Vector2(1182, -657)
+scale = Vector2(0.7762765, 0.7762765)
+ready_rscript = Array[String](["walk", "walk", "walk", "turn_r", "turn_r"])
+ready_cscript = Array[String](["if(in_range):attack"])
+
+[node name="Enemy2" parent="." unique_id=1975967897 instance=ExtResource("4_jyhfs")]
+position = Vector2(141, -437)
+ready_rscript = Array[String](["walk", "turn_l"])
+ready_repeat = true
+ready_cscript = Array[String](["if(in_range):attack"])
+start_dir = 180.0

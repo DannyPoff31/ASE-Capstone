@@ -1,0 +1,10 @@
+{
+    "name": "manuel",
+    "version": "1.0.0",
+    "description": "Commands for the command line game",
+    "list": "",
+    "commands": {
+        "man": "This command lists all available commands and their descriptions.",
+        "dash": "A quick movement \n\"-f\" to dash forward\n\"-b\" to dash backward\n\"-l\" to dash left\n\"-r\" to dash right"
+    }
+}

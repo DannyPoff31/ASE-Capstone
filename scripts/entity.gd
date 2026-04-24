@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var radius: Area2D = $Sprite/Radius
 const SPEED_MULTIPLIER : int = 1000
 
+@export var start_dir: float = 0.0
 @export var health: int
 var max_speed: int = 10
 var speed: int = 2
@@ -22,6 +23,9 @@ var cscript: Array
 var can_move:= true
 var can_attack:= true
 var is_colliding: bool = false
+
+var target_rotation: float = 0.0
+var target_tile: Vector2 = Vector2(0, 0)
 
 enum {
 	FOREWARD, 
@@ -39,6 +43,7 @@ func truer() -> bool:
 
 func _ready() -> void:
 	sprite.play("default")
+	sprite.rotation = deg_to_rad(start_dir)
 
 func hit_wall() -> bool:
 	return is_colliding
@@ -121,25 +126,58 @@ func dash(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
+			target_tile = position + (abs(rot_to_vect(sprite.rotation)) * 64)
 			move("%ss=10" % direction)
-			get_tree().create_timer(0.5).timeout.connect(func(): dash_end())
+			get_tree().create_timer(0.25).timeout.connect(func(): dash_end())
 
 func dash_end() -> void:
 	can_move = true
 	move("-qs=2")
+
+func walk(direction:= "-f") -> void:
+	if(direction != ""):
+		if(can_move):
+			can_move = false
+			target_tile = position + (abs(rot_to_vect(sprite.rotation)) * 128)
+			move("%ss=5" % direction)
+			get_tree().create_timer(1).timeout.connect(func(): walk_end())
+
+func walk_end() -> void:
+	can_move = true
+	move("-qs=2")
+
+func turn_l() -> void:
+	if(can_move):
+		can_move = false
+		target_rotation = sprite.rotation - deg_to_rad(90)
+		turn("-ls=4")
+		get_tree().create_timer(.5).timeout.connect(func(): turn_end())
+		
+func turn_r() -> void:
+	if(can_move):
+		can_move = false
+		target_rotation = sprite.rotation + deg_to_rad(90)  # Set target to 90 degrees left
+		turn("-rs=4")
+		get_tree().create_timer(.5).timeout.connect(func(): turn_end())
+
+func turn_end() -> void:
+	can_move = true
+	turn("-qs=2")
 
 func circle(direction:= "") -> void:
 	if(direction != "" && direction != "-b" && direction != "-f"):
 		var invert_dir: String
 		if(direction == "-r"):
 			invert_dir = "-l"
+			target_rotation = sprite.rotation - deg_to_rad(90)
 		elif(direction == "-l"):
 			invert_dir = "-r"
+			target_rotation = sprite.rotation + deg_to_rad(90)
 		if(can_move):
 			can_move = false
-			move("%ss=10" % direction)
-			turn("%ss=1" % invert_dir)
-			get_tree().create_timer(1.57).timeout.connect(func(): circle_end())
+			move("%ss=5" % direction)
+			turn("%ss=2" % invert_dir)
+			get_tree().create_timer(.78).timeout.connect(func(): circle_end())
 
 func circle_end() -> void:
 	can_move = true
@@ -148,6 +186,7 @@ func circle_end() -> void:
 
 func retreat() -> void:
 	can_move = false
+	target_tile = position - (abs(rot_to_vect(sprite.rotation)) * 128)
 	move("-bs=10")
 	get_tree().create_timer(1.0).timeout.connect(func(): retreat_end())
 
@@ -169,22 +208,40 @@ func _physics_process(delta: float) -> void:
 	if((move_state == FOREWARD)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation) * SPEED_MULTIPLIER * delta
+		if position >= target_tile:
+			position = target_tile
+			move_state = IDLE
 	if((move_state == LEFT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation - deg_to_rad(90)) * SPEED_MULTIPLIER * delta
+		if position <= target_tile:
+			position = target_tile
+			move_state = IDLE
 	if((move_state == RIGHT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(90)) * SPEED_MULTIPLIER * delta
+		if position >= target_tile:
+			position = target_tile
+			move_state = IDLE
 	if((move_state == BACK)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
+		if position <= target_tile:
+			position = target_tile
+			move_state = IDLE
 	if((move_state == IDLE)):
 		velocity = Vector2(0,0)
 		sprite.play("default")
 	if((turn_state == RIGHT)):
 		sprite.rotation += clamp(rot_speed, 1, max_speed) * delta
+		if sprite.rotation >= target_rotation:
+			sprite.rotation = target_rotation
+			turn_state = IDLE
 	if((turn_state == LEFT)):
 		sprite.rotation -= clamp(rot_speed, 1, max_speed) * delta
+		if sprite.rotation <= target_rotation:
+			sprite.rotation = target_rotation
+			turn_state = IDLE
 	
 	var collision = move_and_collide(velocity * delta)
 	if collision:

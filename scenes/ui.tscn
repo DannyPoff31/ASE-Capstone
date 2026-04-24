@@ -1,16 +1,34 @@
 [gd_scene format=3 uid="uid://bwa8eclgjjttv"]
 
 [ext_resource type="Script" uid="uid://ccjsn33hwny2" path="res://scripts/ui.gd" id="1_nt7q6"]
-[ext_resource type="Texture2D" uid="uid://csfjuvpiih4p7" path="res://assets/buttonTest.png" id="2_gdt2y"]
 [ext_resource type="Script" uid="uid://d0kd2cy6o7v2r" path="res://scripts/line_edit.gd" id="2_x4jx1"]
 [ext_resource type="FontFile" uid="uid://cojvp2elsqwvn" path="res://assets/TestFont.ttf" id="2_yev5y"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wm3ai"]
-texture = ExtResource("2_gdt2y")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yev5y"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7vwb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Theme" id="Theme_yev5y"]
 LineEdit/fonts/font = ExtResource("2_yev5y")
-LineEdit/styles/normal = SubResource("StyleBoxTexture_wm3ai")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_yev5y")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_p7vwb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdt2y"]
+
+[sub_resource type="Theme" id="Theme_wm3ai"]
+TextEdit/styles/focus = SubResource("StyleBoxFlat_gdt2y")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8dubc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wm3ai"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Theme" id="Theme_8dubc"]
+TextEdit/styles/focus = SubResource("StyleBoxFlat_8dubc")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_wm3ai")
 
 [node name="UI" type="Control" unique_id=2044330069 node_paths=PackedStringArray("menu", "terminal_text", "script_edit", "text")]
 z_index = 2
@@ -29,6 +47,7 @@ text = NodePath("CommandLine/LineEdit")
 
 [node name="FullMenu" type="Control" parent="." unique_id=599562410]
 layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -55,6 +74,7 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_wm3ai")
 scroll_active = false
 scroll_following = true
 
@@ -69,6 +89,7 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_8dubc")
 
 [node name="CommandLine" type="Control" parent="." unique_id=2106063047]
 layout_mode = 1
@@ -84,7 +105,7 @@ grow_vertical = 0
 z_index = 3
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.1
+anchor_left = 0.16
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -104,6 +125,7 @@ z_index = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
+anchor_right = 0.04
 anchor_bottom = 0.5
 offset_left = 10.0
 offset_top = -15.5
@@ -111,7 +133,7 @@ offset_right = 150.0
 offset_bottom = 15.5
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_yev5y")
-text = "root@player:~"
+text = "root@player:~/plyr$"
 scroll_active = false
 
 [node name="ColorRect" type="ColorRect" parent="CommandLine" unique_id=200664642]
