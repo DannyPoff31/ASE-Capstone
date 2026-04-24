@@ -17,6 +17,7 @@ position = Vector2(222, 161)
 health = 2
 
 [node name="Enemy" parent="." unique_id=37261395 instance=ExtResource("4_jyhfs")]
+position = Vector2(343, 0)
 
 [node name="Potion" parent="." unique_id=179771917 instance=ExtResource("5_tbgi4")]
 position = Vector2(218, 284)

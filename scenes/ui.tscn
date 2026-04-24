@@ -29,19 +29,17 @@ text = NodePath("CommandLine/LineEdit")
 
 [node name="FullMenu" type="Control" parent="." unique_id=599562410]
 layout_mode = 1
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MenuBackground" type="ColorRect" parent="FullMenu" unique_id=1246430851]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 648.0
-offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)

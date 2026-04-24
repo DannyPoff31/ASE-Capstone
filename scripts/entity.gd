@@ -8,10 +8,11 @@ extends CharacterBody2D
 const SPEED_MULTIPLIER : int = 1000
 
 @export var health: int
-var max_speed: int = 20
+var max_speed: int = 10
 var speed: int = 2
 var rot_speed: int = 1
 var is_attacking: bool = false
+var repeat: bool = false
 var is_rscript: bool = false
 var rscript: Array
 var rscript_indx:= 0
@@ -20,6 +21,7 @@ var cscript: Array
 
 var can_move:= true
 var can_attack:= true
+var is_colliding: bool = false
 
 enum {
 	FOREWARD, 
@@ -37,6 +39,9 @@ func truer() -> bool:
 
 func _ready() -> void:
 	sprite.play("default")
+
+func hit_wall() -> bool:
+	return is_colliding
 
 func in_range() -> bool:
 	if(radius):
@@ -57,6 +62,7 @@ func die() -> void:
 func attack() -> void:
 	is_attacking = true
 	hit_box.attack()
+	get_tree().create_timer(1.5).timeout.connect(func(): is_attacking = false)
 
 func add_script(scr:= "") -> void:
 	if(scr != ""):
@@ -91,7 +97,6 @@ func move(params: String) -> void:
 						print("Error")
 				"q":
 					move_state = IDLE
-					velocity = Vector2(0,0)
 
 func turn(params: String) -> void:
 	var rot_speed_var = params.split("=")
@@ -116,7 +121,7 @@ func dash(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
-			move("%ss=15" % direction)
+			move("%ss=10" % direction)
 			get_tree().create_timer(0.5).timeout.connect(func(): dash_end())
 
 func dash_end() -> void:
@@ -137,7 +142,6 @@ func circle(direction:= "") -> void:
 			get_tree().create_timer(1.57).timeout.connect(func(): circle_end())
 
 func circle_end() -> void:
-	print(rad_to_deg(sprite.rotation))
 	can_move = true
 	move("-qs=2")
 	turn("-qs=1")
@@ -154,6 +158,7 @@ func retreat_end() -> void:
 func cancel_process() -> void:
 	move("-q")
 	turn("-q")
+	repeat = false
 	is_rscript = false
 	is_cscript = false
 
@@ -174,15 +179,27 @@ func _physics_process(delta: float) -> void:
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
 	if((move_state == IDLE)):
+		velocity = Vector2(0,0)
 		sprite.play("default")
 	if((turn_state == RIGHT)):
 		sprite.rotation += clamp(rot_speed, 1, max_speed) * delta
 	if((turn_state == LEFT)):
 		sprite.rotation -= clamp(rot_speed, 1, max_speed) * delta
+	
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		var collider = collision.get_collider()
+		if collider is TileMapLayer:
+			velocity = -(velocity / 2)
+			move_state = IDLE
+			is_colliding = true
+	else:
+		is_colliding = false
 	move_and_slide()
+
 	if(is_rscript):
-		if(can_move):
-			var text = rscript[rscript_indx].split(" ")
+		if(can_move && !is_attacking):
+			var text = rscript[rscript_indx].trim_prefix(" ").split(" ")
 			var callable = Callable(self, text[0])
 			if(len(text) == 1):
 				if(callable.is_valid()):
@@ -194,15 +211,22 @@ func _physics_process(delta: float) -> void:
 					callable.callv(text)
 					rscript_indx += 1
 		if(rscript_indx >= len(rscript)):
-			is_rscript = false
-			rscript_indx = 0
+			if(!repeat):
+				is_rscript = false
+				rscript_indx = 0
+			else:
+				rscript_indx = 0
 	if(is_cscript):
 		for i in cscript:
 			var if_text = i.split("(")[1].split(")")[0]
+			var if_not = false
+			if "!" in if_text:
+				if_text = if_text.split("!")[1]
+				if_not = true
 			var text = i.split(":")[1].split(" ")
 			var if_callable = Callable(self, if_text)
 			var callable = Callable(self, text[0])
-			if(if_callable.call()): 
+			if(if_callable.call() != if_not): 
 				if(len(text) == 1):
 					if(callable.is_valid()):
 						callable.call()

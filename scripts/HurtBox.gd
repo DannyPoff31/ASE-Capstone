@@ -10,7 +10,7 @@ func _on_area_entered(area) -> void:
 	if(area is HitBox):
 		owner.take_damage(area.damage)
 	elif(area is Item):
-		if(owner.inventory):
+		if(owner is Player):
 			owner.inventory.add_item(area)
 			area.collision.disabled = true
 			area.sprite.visible = false

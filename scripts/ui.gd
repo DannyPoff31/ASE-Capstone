@@ -12,6 +12,7 @@ var directory: String = "player"
 var dir_list: Array = ["player", "inventory"]
 var isMenuOpen := false
 var is_script_open := false
+var script_temp: String = ""
 
 func use(item:= "") -> void: ## rework !!!!
 	var ind:= 0
@@ -34,8 +35,7 @@ func return_to_terminal() -> void:
 
 func openMenu() -> void:
 	if(!isMenuOpen):
-		menu.position.x = 0
-		menu.position.y = 0
+		menu.visible = true
 		isMenuOpen = true
 
 func get_main_folders() -> void:
@@ -63,26 +63,33 @@ func get_folder(folder:= "") -> void:
 		terminal_text.text += o
 	terminal_text.text += "\n"
 
-func new_script() -> void:
-	openMenu()
-	script_edit.visible = true
-	is_script_open = true
-	text.release_focus()
-	script_edit.grab_focus()
+### OPENS THE SCRIPT EDITOR
+func cat(scr_name = "") -> void:
+	if(scr_name != ""):
+		if inv.is_script_available(scr_name): 
+			script_edit.text = inv.get_script_by_name(scr_name).get_content()
+		script_temp = scr_name
+		openMenu()
+		script_edit.visible = true
+		is_script_open = true
+		script_edit.grab_focus()
 
-func create_script(script_name = "") -> void:
-	if(script_name != ""):
-		inv.add_script(RScript.new(script_name, script_edit.text))
+func save() -> void:
+	if(script_temp != ""):
+		inv.add_script(RScript.new(script_temp, script_edit.text))
 		closeMenu()
 		text.grab_focus()
 
-func use_script(src = "") -> void:
-	if(src != ""):
-		player.add_script(inv.get_script_by_name(src).get_content())
+### USES THE SCRIPT
+func run(scr = "", param = "") -> void:
+	if(param == "-r"): player.repeat = true
+	if(inv.is_script_available(scr)):
+		player.add_script(inv.get_script_by_name(scr).get_content())
 
 func closeMenu() -> void:
 	if(isMenuOpen):
-		menu.position.y = size.y
+		script_temp = ""
+		menu.visible = false
 		script_edit.text = ""
 		script_edit.visible = false
 		is_script_open = false
@@ -114,6 +121,7 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 			parse_text.remove_at(0)
 			parse_text.remove_at(0)
 			if(callable.is_valid()):
+				print(parse_text)
 				callable.callv(parse_text)
 	elif(parse_text[0] != ""):
 		var callable = Callable(player, parse_text[0])

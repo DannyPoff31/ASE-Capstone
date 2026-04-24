@@ -192,4 +192,5 @@ script = ExtResource("6_xwavj")
 shape = SubResource("CircleShape2D_md484")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=468132884]
+scale = Vector2(3.3593748, 3.0603056)
 shape = SubResource("CircleShape2D_xwavj")
