@@ -1,19 +1,9 @@
 [gd_scene format=3 uid="uid://bwa8eclgjjttv"]
 
+[ext_resource type="Theme" uid="uid://uvdnfwr3m06y" path="res://assets/new_theme.tres" id="1_gdt2y"]
 [ext_resource type="Script" uid="uid://ccjsn33hwny2" path="res://scripts/ui.gd" id="1_nt7q6"]
 [ext_resource type="Script" uid="uid://d0kd2cy6o7v2r" path="res://scripts/line_edit.gd" id="2_x4jx1"]
 [ext_resource type="FontFile" uid="uid://cojvp2elsqwvn" path="res://assets/TestFont.ttf" id="2_yev5y"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yev5y"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7vwb"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="Theme" id="Theme_yev5y"]
-LineEdit/fonts/font = ExtResource("2_yev5y")
-LineEdit/styles/focus = SubResource("StyleBoxFlat_yev5y")
-LineEdit/styles/normal = SubResource("StyleBoxFlat_p7vwb")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdt2y"]
 
@@ -38,7 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_yev5y")
+theme = ExtResource("1_gdt2y")
 script = ExtResource("1_nt7q6")
 menu = NodePath("FullMenu/MenuBackground")
 terminal_text = NodePath("FullMenu/MenuBackground/TerminalText")
@@ -144,6 +134,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="Health" type="RichTextLabel" parent="." unique_id=1098568807]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_right = 1.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 50.0
+grow_horizontal = 0
 
 [connection signal="gui_input" from="CommandLine/LineEdit" to="CommandLine/LineEdit" method="_on_gui_input"]
 [connection signal="text_submitted" from="CommandLine/LineEdit" to="." method="_on_line_edit_text_submitted"]

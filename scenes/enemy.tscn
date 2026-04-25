@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://xkte3xigoahg" path="res://scripts/HurtBox.gd" id="3_4ra3w"]
 [ext_resource type="Script" uid="uid://6vccd5i1ssda" path="res://scripts/HitBox.gd" id="4_c4w8v"]
 [ext_resource type="Texture2D" uid="uid://chba60jkxlrty" path="res://assets/fire.png" id="5_xwavj"]
-[ext_resource type="Script" uid="uid://bhgxmu52hrd3v" path="res://scenes/radius.gd" id="6_xwavj"]
+[ext_resource type="Script" uid="uid://bhgxmu52hrd3v" path="res://scripts/radius.gd" id="6_xwavj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xwavj"]
 atlas = ExtResource("2_c4w8v")

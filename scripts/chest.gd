@@ -9,6 +9,7 @@ func _ready() -> void:
 
 func _on_area_entered(hit_box: HitBox) -> void:
 	open()
+	get_tree().change_scene_to_file("res://scenes/win.tscn")
 
 
 func open() -> void:

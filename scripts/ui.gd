@@ -8,12 +8,20 @@ extends Control
 @export var inv : Inventory
 @onready var command_line = $CommandLine/RichTextLabel
 @onready var file = JSON.parse_string(FileAccess.open("res://assets/manuel.json", FileAccess.READ).get_as_text())
+@onready var health: RichTextLabel = $Health
 
 var directory: String = "plyr"
 var dir_list: Array = ["plyr", "inv"]
 var isMenuOpen := false
 var is_script_open := false
 var script_temp: String = ""
+
+func _ready() -> void:
+	player.damaged.connect(health_bar)
+	health.text = "health: %s" %player.health
+
+func health_bar(new_health: int) -> void:
+	health.text = "health: %s" %new_health
 
 func use(item:= "") -> void: ## rework !!!!
 	var ind:= 0
@@ -61,7 +69,7 @@ func get_folder(folder:= "") -> void:
 	terminal_text.text += "%s \n" % folder
 	terminal_text.text += "-------\n"
 	for o in arr:
-		terminal_text.text += o
+		terminal_text.text += "%s\n" %o
 	terminal_text.text += "\n"
 
 ### OPENS THE SCRIPT EDITOR
@@ -123,7 +131,6 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 			script_edit.text += file.commands[parse_text[1]]
 		return
 	if(directory == "inv" && parse_text[0] != ""):
-		print(parse_text)
 		var callable = Callable(self, parse_text[0])
 		if(len(parse_text) == 1):
 			if(callable.is_valid()):
@@ -141,60 +148,3 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 			parse_text.remove_at(0)
 			if(callable.is_valid()):
 				callable.callv(parse_text)
-
-	#match text[0]:
-		#### Menu ###
-		#"inventory":
-			#openMenu()
-			#get_main_folders()
-		#"ivt":
-			#openMenu()
-			#get_main_folders()
-		#"ls":
-			#if(len(text) == 1):
-				#openMenu()
-				#get_main_folders()
-			#elif(len(text) == 2):
-				#openMenu()
-				#get_folder(text[1])
-		#"newScript":
-			#openMenu()
-			#open_script()
-		#"save":
-			#if(is_script_open && len(text) == 2):
-				#create_script(text[1])
-		#"close":
-			#closeMenu()
-		#"cls":
-			#closeMenu()
-		#### END MENU ###
-#
-		#### Movement ###
-		#"move":
-			#if(len(text) > 1):
-				#player.move(text)
-			#else:
-				#print("This command needs at least one option")
-		#"turn":
-			#if(len(text) > 1):
-				#player.turn(text)
-			#else:
-				#print("This command needs at least one option")
-		#### END Movement ###
-#
-		#"attack":
-			#player.attack()
-		#"health":
-			#print(player.health)
-		#"use":
-			#use(text[1])
-		#"script":
-			#use_script(text[1])
-		#"open":
-			#player.open()
-		#"clear":
-			#terminal_text.text = ""
-#
-		#
-		#_:
-			#print("Invalid command")

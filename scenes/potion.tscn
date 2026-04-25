@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://didxmi1pq3r5x"]
+[gd_scene format=3 uid="uid://didxmi1pq3r5x"]
 
-[ext_resource type="Script" uid="uid://dkybisbrfoa3f" path="res://potion.gd" id="1_ym5ma"]
+[ext_resource type="Script" uid="uid://dkybisbrfoa3f" path="res://scripts/potion.gd" id="1_ym5ma"]
 [ext_resource type="Texture2D" uid="uid://iwhr83jr1gky" path="res://assets/potion.png" id="2_le10y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_le10y"]

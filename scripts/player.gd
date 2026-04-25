@@ -10,7 +10,7 @@ func open() -> void:
 	hit_box.open()
 
 func die() -> void:
-	queue_free()
+	get_tree().change_scene_to_file("res://scenes/game_over.tscn")
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if(is_attacking):

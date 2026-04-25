@@ -9,4 +9,4 @@ func _ready() -> void:
 	item_name = "health_potion"
 
 func use_item(player : Player) -> void:
-	player.health += 5
+	player.take_damage("-5")

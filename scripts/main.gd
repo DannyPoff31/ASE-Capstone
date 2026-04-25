@@ -7,7 +7,6 @@ var fullscreen := true
 func _ready() -> void:
 	await get_tree().process_frame
 	get_viewport().size = DisplayServer.screen_get_size()
-	$Enemy.died.connect(on_died)
 	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func on_died() -> void:

@@ -1,6 +1,8 @@
 class_name Entity
 extends CharacterBody2D
 
+signal damaged(health: int)
+
 @onready var sprite : AnimatedSprite2D = $Sprite
 @onready var attack_sprite : AnimatedSprite2D = $Sprite/HitBox/AnimatedSprite2D
 @onready var hit_box : HitBox = $Sprite/HitBox
@@ -58,6 +60,7 @@ func ch_range(range_size: String) -> void:
 		radius.shape.shape.set_radius(int(range_size))
 func take_damage(damage: String) -> void:
 	health -= int(damage)
+	damaged.emit(health)
 	if(health <= 0):
 		die()
 
@@ -70,12 +73,15 @@ func attack() -> void:
 	get_tree().create_timer(1.5).timeout.connect(func(): is_attacking = false)
 
 func add_script(scr:= "") -> void:
+	print("Stuff")
 	if(scr != ""):
 		if(scr.contains(":")):
+			print("cond")
 			cscript = scr.split(";")
 			cscript.remove_at(len(cscript)-1)
 			is_cscript = true
 		else:
+			print("else")
 			rscript = scr.split(";")
 			rscript.remove_at(len(rscript)-1)
 			is_rscript = true
@@ -122,11 +128,23 @@ func turn(params: String) -> void:
 				"q":
 					turn_state = IDLE
 
+func dir_value(dir: String) -> float:
+	match dir:
+		"-f":
+			return deg_to_rad(0.0)
+		"-l":
+			return deg_to_rad(-90.0)
+		"-r":
+			return deg_to_rad(90.0)
+		"-b":
+			return deg_to_rad(180.0)
+	return deg_to_rad(0.0)
+
 func dash(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
-			target_tile = position + (abs(rot_to_vect(sprite.rotation)) * 64)
+			target_tile = position + (rot_to_vect(sprite.rotation + dir_value(direction)) * 64)
 			move("%ss=10" % direction)
 			get_tree().create_timer(0.25).timeout.connect(func(): dash_end())
 
@@ -138,7 +156,7 @@ func walk(direction:= "-f") -> void:
 	if(direction != ""):
 		if(can_move):
 			can_move = false
-			target_tile = position + (abs(rot_to_vect(sprite.rotation)) * 128)
+			target_tile = position + (rot_to_vect(sprite.rotation + dir_value(direction)) * 128)
 			move("%ss=5" % direction)
 			get_tree().create_timer(1).timeout.connect(func(): walk_end())
 
@@ -208,25 +226,25 @@ func _physics_process(delta: float) -> void:
 	if((move_state == FOREWARD)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation) * SPEED_MULTIPLIER * delta
-		if position >= target_tile:
+		if position.distance_to(target_tile) < 5.0:
 			position = target_tile
 			move_state = IDLE
 	if((move_state == LEFT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation - deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-		if position <= target_tile:
+		if position.distance_to(target_tile) < 5.0:
 			position = target_tile
 			move_state = IDLE
 	if((move_state == RIGHT)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(90)) * SPEED_MULTIPLIER * delta
-		if position >= target_tile:
+		if position.distance_to(target_tile) < 5.0:
 			position = target_tile
 			move_state = IDLE
 	if((move_state == BACK)):
 		sprite.play("walk")
 		velocity = clamp(speed, 1, max_speed) * rot_to_vect(sprite.rotation + deg_to_rad(180)) * SPEED_MULTIPLIER * delta
-		if position <= target_tile:
+		if position.distance_to(target_tile) < 5.0:
 			position = target_tile
 			move_state = IDLE
 	if((move_state == IDLE)):

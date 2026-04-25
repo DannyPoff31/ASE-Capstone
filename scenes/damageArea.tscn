@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://batveg7bslgba"]
+
+[ext_resource type="Script" uid="uid://cswco7mckbsnq" path="res://scripts/damage_area.gd" id="1_gnfw1"]
+[ext_resource type="Texture2D" uid="uid://d213x7bxugicn" path="res://assets/icon.svg" id="1_qnb05"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d15gy"]
+
+[node name="Area2D" type="Area2D" unique_id=686396575]
+script = ExtResource("1_gnfw1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=74282488]
+shape = SubResource("RectangleShape2D_d15gy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=426605799]
+scale = Vector2(0.15904322, 0.15828894)
+texture = ExtResource("1_qnb05")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
