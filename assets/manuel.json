@@ -1,0 +1,30 @@
+{
+    "name": "manuel",
+    "version": "1.0.0",
+    "description": "Commands for the command line game",
+    "list": "",
+    "commands": {
+        "man": "man - This command lists all available commands and their descriptions.\nman [command name]",
+        "dash": "dash - A quick movement\ndash [parameters]\n\"-f\" to dash forward\n\"-b\" to dash backward\n\"-l\" to dash left\n\"-r\" to dash right",
+        "walk": "walk - A slow movement\nwalk [parameters]\n\"-f\" to walk forward\n\"-b\" to walk backward\n\"-l\" to walk left\n\"-r\" to walk right",
+        "attack": "attack - Attack an enemy in front of you\nattack",
+        "circle": "circle - Move in a semi circle motion\ncircle [parameters]\n\"-l\" to circle left\n\"-r\" to circle right",
+        "retreat": "retreat - quickly move backwards to create distance between you and an enemy\nretreat",
+        "turn_r": "turn_r - rotate to the right 90 degrees\nturn_r",
+        "turn_l": "tunr_l - rotate to the left 90 degrees\nturn_l",
+        "hit_wall": "hit_wall - A conditional to check if you collide with a wall\nUse this command in an if statement when scripting to check if you hit a wall",
+        "in_range": "in_range - A conditional to check if an enemy is withing your \"range\"\nUse this command in an if statement when scripting to check if an enemy is within your \"range\"",
+        "ch_range": "ch_range - change the radius of your \"range\"\nch_range [integer]",
+        "move": "move - A more freeform command to move in a direction, change speed, and stop moving\nmove [parameters]\n\"-f\" to move forward\n\"-b\" to move backward\n\"-l\" to move left\n\"-r\" to move right\n\"-s\" to change speed between 1 - 10\n\"-q\" to stop moving",
+        "turn": "turn - A more freeform command to rotate in a direction, change speed, and stop rotating\nturn [parameters]\n\"-l\" to rotate left\n\"-r\" to rotate right\n\"-s\" to change speed between 1 - 10\n\"-q\" to stop rotating",
+        "cancel_process": "cancel_process - A command that cancels all movement, rotation, and scripts that are currently running\ncancel_process\n\"ctr + c\" is the key combination to run this command",
+        "cd": "cd - A command to change the current directory between \"plyr\" and \"inv\"\ncd [directory name]",
+        "ls": "ls - A command to list the contents of the current directory\nls [subdirectory name]",
+        "use": "use - A command to use an item you have collected\nuse [item name]",
+        "return_to_terminal": "return_to_terminal - A command to return to the terminal if your cursor loses focus. This command is most commonly used when scripting\nreturn_to_terminal\n\"ctr + q\" is the key to run this command",
+        "cat": "cat - A command to read and edit the contents of a file or create a new file\ncat [file name]",
+        "save": "save - A command to save the changes made to your script\nsave",
+        "run": "run - A command to run a script you have written\nrun [script name]",
+        "closeMenu": "closeMenu - A command to close the full terminal window\ncloseMenu\n\"ctr + c\" is a key that also closes the terminal window"
+    }
+}

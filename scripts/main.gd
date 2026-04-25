@@ -5,12 +5,12 @@ var fullscreen := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	await get_tree().process_frame
+	get_viewport().size = DisplayServer.screen_get_size()
+	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func on_died() -> void:
+	print("you win")
 
 func _input(event: InputEvent) -> void:
 	if(event.is_action_pressed('quit')):
@@ -22,3 +22,6 @@ func _input(event: InputEvent) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 			fullscreen = true
+
+func _physics_process(delta: float) -> void:
+	pass

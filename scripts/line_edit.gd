@@ -10,10 +10,11 @@ func _ready() -> void:
 
 
 func _on_text_submitted(new_text: String) -> void:
-	history.push_front(text)
-	if(len(history) > 10):
-		history.pop_at(10)
-	index = -1
+	if new_text != "":
+		history.push_front(new_text)
+		if(len(history) > 10):
+			history.pop_at(10)
+		index = -1
 	clear()
 
 func _on_gui_input(event: InputEvent) -> void:

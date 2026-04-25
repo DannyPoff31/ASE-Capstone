@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bsi84nfsymb0v"]
+
+[ext_resource type="Theme" uid="uid://uvdnfwr3m06y" path="res://assets/new_theme.tres" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://5k0nlp0wls3g" path="res://scenes/main_menu.gd" id="2_ekxnf"]
+
+[node name="MainMenu" type="Control" unique_id=1107234854]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_l6cm7")
+script = ExtResource("2_ekxnf")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1898288392]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.33333334, 0.65882355, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1802491581]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "turtle_terminal"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1161953679]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=689760187]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Play"
+
+[node name="Button2" type="Button" parent="HBoxContainer" unique_id=205400836]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]

@@ -13,6 +13,7 @@ func _ready() -> void:
 func attack() -> void:
 	collision_shape.disabled = false
 	owner.attack_sprite.play("fire")
+	get_tree().create_timer(1.5).timeout.connect(func(): collision_shape.disabled = true)
 
 func open() -> void:
 	collision_shape.disabled = false

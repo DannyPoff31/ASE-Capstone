@@ -1,0 +1,16 @@
+[gd_resource type="Theme" format=3 uid="uid://uvdnfwr3m06y"]
+
+[ext_resource type="FontFile" uid="uid://cojvp2elsqwvn" path="res://assets/TestFont.ttf" id="1_6pma3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yev5y"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7vwb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[resource]
+Button/fonts/font = ExtResource("1_6pma3")
+LineEdit/fonts/font = ExtResource("1_6pma3")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_yev5y")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_p7vwb")
+RichTextLabel/fonts/normal_font = ExtResource("1_6pma3")

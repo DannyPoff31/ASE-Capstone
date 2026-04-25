@@ -8,7 +8,7 @@ var items: Array = []
 var scripts: Array = []
 
 func _ready() -> void:
-	scripts.push_back(Scripts.new("something", "if(test_cond):attack;"))
+	scripts.push_back(Scripts.new("something", "if(truer):attack;"))
 	scripts.push_back(Scripts.new("test", "move -f;turn -rs=1;"))
 
 ### SETTERS ###
@@ -43,6 +43,12 @@ func get_all_items() -> Array:
 
 func get_rscript(i : int) -> RScript:
 	return scripts[i]
+
+func is_script_available(scr: String) -> bool:
+	for i in scripts:
+		if i.get_script_name() == scr:
+			return true
+	return false
 
 func get_script_by_name(n : String) -> RScript:
 	var rscript : RScript
