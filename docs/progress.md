@@ -94,3 +94,31 @@ marp: true
 ### Features and Requirements:
 3 / 6 (50%)
 9 / 14 (64%)
+
+# Week 14
+
+## Description
+
+- refactored how nodes are aquired by node scripts
+- started creating conditionals
+
+### Loc: 126
+
+### Features and Requirements:
+3 / 6 (50%)
+10 / 14 (71%)
+
+# Week 15
+
+## Description
+
+- Created a demo level
+- environmental hazard
+- win state, lose state, home screen
+- enemy script and the code to run them
+
+### Loc: 628
+
+### Features and Requirements:
+6 / 6 (100%)
+14 / 14 (100%)
