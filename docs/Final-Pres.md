@@ -51,3 +51,11 @@ Requirements: 7 / 7 (100%)
 - Create a game scene where the player may test their knowledge
 
 ---
+
+## What I learned
+
+- Godot and GDScript
+- How terminals run commands
+- Game Design
+
+---
