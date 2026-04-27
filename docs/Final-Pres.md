@@ -13,6 +13,14 @@ marp: true
 
 ---
 
+## Solution
+
+- Terminal-based character controller
+- Commands that are similar to/the same as real world command lines
+- Combat encounters to test knowledge
+
+---
+
 ## LoC and Burndown Rate
 
 LoC: 1,568
@@ -33,5 +41,13 @@ Requirements: 7 / 7 (100%)
    1. combat encounters
    2. environmental hazards
    3. win state
+
+---
+
+## Technical Contribution
+
+- Created a system that parsed and ran user input
+- created a system that ran predetermined or player created input
+- Create a game scene where the player may test their knowledge
 
 ---
